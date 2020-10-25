@@ -53,6 +53,8 @@ You can now type messages on producer side which will get transmitted to the con
 
 `kafka-topics.sh --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 1 --topic t_location`
 
+`kafka-topics.sh --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 1 --topic t_food_order`
+
 ### API
 
 `http://localhost/api/commodity/v1/all`
