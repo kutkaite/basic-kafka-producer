@@ -55,6 +55,8 @@ You can now type messages on producer side which will get transmitted to the con
 
 `kafka-topics.sh --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 1 --topic t_food_order`
 
+`kafka-topics.sh --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 1 --topic t_simple_number`
+
 ### API
 
 `http://localhost/api/commodity/v1/all`
@@ -83,7 +85,9 @@ Change offset for a specific group:
 #### Producers:
 1. `KafkaProducer.java` - sends a simple `String` message and is called from `KafkaProducerApplication.java`
 2. `IncrementalProducer.java` - sends messages and is run on a schedule using `@Scheduled` annotation
-3. `KafkaKeyProducer.java` - sends a message with a key
-4. `EmployeeProducer` - send a JSON message
+3. `KafkaKeyProducer.java` - sends a message with a key to topic `t_multiple_partitions`
+4. `EmployeeProducer` - send a JSON message to topic `t_employee`
 5. `CommodityProducer.java` - send a JSON message scheduled by `CommodityScheduler` service and getting data from `http://localhost:80/api/commodity/v1/all`
-6. `CarLocationProducer.java` - sends a JSON message
+6. `CarLocationProducer.java` - sends a JSON message to topic `t_location`
+7. `FoodOrderProducer.java` - sends a JSON message  to topic `t_food_order`
+8. `SimpleNumberProducer.java` - sends a JSON message to topic `t_simple_number`

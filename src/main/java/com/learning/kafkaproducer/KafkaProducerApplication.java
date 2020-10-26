@@ -2,10 +2,8 @@ package com.learning.kafkaproducer;
 
 import com.learning.kafkaproducer.entity.Employee;
 import com.learning.kafkaproducer.entity.FoodOrder;
-import com.learning.kafkaproducer.producer.EmployeeProducer;
-import com.learning.kafkaproducer.producer.FoodOrderProducer;
-import com.learning.kafkaproducer.producer.KafkaKeyProducer;
-import com.learning.kafkaproducer.producer.KafkaProducer;
+import com.learning.kafkaproducer.entity.SimpleNumber;
+import com.learning.kafkaproducer.producer.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -30,12 +28,20 @@ public class KafkaProducerApplication implements CommandLineRunner {
     @Autowired
     private FoodOrderProducer foodOrderProducer;
 
+    @Autowired
+    private SimpleNumberProducer simpleNumberProducer;
+
     public static void main(String[] args) {
         SpringApplication.run(KafkaProducerApplication.class, args);
     }
 
     @Override
     public void run(String... args) throws Exception {
+        for (int i = 0; i < 3; i++) {
+            SimpleNumber simpleNumber = new SimpleNumber(i);
+            simpleNumberProducer.sendMessage(simpleNumber);
+        }
+
         FoodOrder chickenOrder = new FoodOrder("Chicken", 3);
         FoodOrder fishOrder = new FoodOrder("Fish", 10);
         FoodOrder pizzaOrder = new FoodOrder("Pizza", 5);
