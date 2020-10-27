@@ -43,6 +43,12 @@ Consumer side [setup](https://github.com/kutkaite/basic-kafka-consumer#consumer-
 
 `kafka-topics.sh --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 1 --topic t_simple_number`
 
+`kafka-topics.sh --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 2 --topic t_image`
+
+`kafka-topics.sh --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 2 --topic t_invoice`
+
+`kafka-topics.sh --create --zookeeper zookeeper:2181 --replication-factor 1 --partitions 2 --topic t_invoice_dlt`
+
 ## Producers explained:
 1. `KafkaProducer.java` - sends a simple `String` message and is called from `KafkaProducerApplication.java`
 2. `IncrementalProducer.java` - sends messages and is run on a schedule using `@Scheduled` annotation
@@ -52,6 +58,7 @@ Consumer side [setup](https://github.com/kutkaite/basic-kafka-consumer#consumer-
 6. `CarLocationProducer.java` - sends a JSON message to topic `t_location`
 7. `FoodOrderProducer.java` - sends a JSON message  to topic `t_food_order`
 8. `SimpleNumberProducer.java` - sends a JSON message to topic `t_simple_number`
+9. `InvoiceProducers.java` - sends a JSON message to topic `t_invoice` with having a dead letter topic `t_invoice_dlt`
 
 ## Useful commands:
 
@@ -73,3 +80,11 @@ Check group ids:
 
 Change offset for a specific group:
 `kafka-consumer-groups.sh --bootstrap-server localhost:9092 --group cg-dashboard --execute --reset-offsets --to-offset 10 --topic t_commodity:0`
+
+## Kafka basics:
+- Retention set by policy
+- No routing mechanism
+- One consumer per partition, guaranteed order
+- consumers pull from Kafka topic
+- need to manage cluster replication, producer and consumer configs
+- good for scalability, big data streaming

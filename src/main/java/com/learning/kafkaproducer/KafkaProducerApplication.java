@@ -1,9 +1,9 @@
 package com.learning.kafkaproducer;
 
-import com.learning.kafkaproducer.entity.Employee;
-import com.learning.kafkaproducer.entity.FoodOrder;
-import com.learning.kafkaproducer.entity.SimpleNumber;
+import com.learning.kafkaproducer.entity.*;
 import com.learning.kafkaproducer.producer.*;
+import com.learning.kafkaproducer.service.ImageService;
+import com.learning.kafkaproducer.service.InvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -31,12 +31,42 @@ public class KafkaProducerApplication implements CommandLineRunner {
     @Autowired
     private SimpleNumberProducer simpleNumberProducer;
 
+    @Autowired
+    private ImageProducer imageProducer;
+
+    @Autowired
+    private ImageService imageService;
+
+    @Autowired
+    private InvoiceService invoiceService;
+
+    @Autowired
+    private InvoiceProducer invoiceProducer;
+
     public static void main(String[] args) {
         SpringApplication.run(KafkaProducerApplication.class, args);
     }
 
     @Override
     public void run(String... args) throws Exception {
+        for (int i = 0; i < 10; i++) {
+            Invoice invoice = invoiceService.generateInvoice();
+
+            if (i >= 5) {
+                invoice.setAmount(-1);
+            }
+
+            invoiceProducer.send(invoice);
+        }
+
+        Image image1 = imageService.generateImage("jpg");
+        Image image2 = imageService.generateImage("svg");
+        Image image3 = imageService.generateImage("jpg");
+
+        imageProducer.publish(image1);
+        imageProducer.publish(image2);
+        imageProducer.publish(image3);
+
         for (int i = 0; i < 3; i++) {
             SimpleNumber simpleNumber = new SimpleNumber(i);
             simpleNumberProducer.sendMessage(simpleNumber);
